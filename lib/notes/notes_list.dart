@@ -32,9 +32,10 @@ class NotesList extends StatelessWidget {
           Color color = utils.colorByStr(note.color);
 
           return Container(
-            padding: EdgeInsets.fromLTRB(20, 20, 20, 0),
+            margin: EdgeInsets.fromLTRB(10, 10, 10, 0),
             child: Slidable(
-              actionPane: SlidableBehindActionPane(),
+
+              actionPane: SlidableScrollActionPane(),
               actionExtentRatio: 0.25,
               secondaryActions: [
                 IconSlideAction(
@@ -77,6 +78,8 @@ class NotesList extends StatelessWidget {
                 )
               ],
               child: Card(
+                margin: EdgeInsets.all(0),
+                
                 elevation: 8,
                 color: color,
                 child: ListTile(
