@@ -6,13 +6,12 @@ import '../utils.dart' as utils;
 
 class NotesEntry extends StatelessWidget {
   final TextEditingController _titleEditingController = TextEditingController();
+
   final TextEditingController _contentEditingController = TextEditingController();
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-
   NotesEntry() {
     print("## NotesEntry.constuctor");
-
     _titleEditingController.addListener(() {
       notesModel.entityBeingEdited.title = _titleEditingController.text;
     });
@@ -28,7 +27,6 @@ class NotesEntry extends StatelessWidget {
       _titleEditingController.text = notesModel.entityBeingEdited.title;
       _contentEditingController.text = notesModel.entityBeingEdited.content;
     }
-      final FocusNode myFodusNode = FocusNode();
 
     return ScopedModel(
       model: notesModel,
@@ -41,14 +39,18 @@ class NotesEntry extends StatelessWidget {
                 children: [
                   FlatButton(
                     onPressed: () {
-                      // FocusScope.of(inContext).requestFocus(FocusNode());
+                      FocusScope.of(inContext).requestFocus(FocusNode());
                       inModel.setStackIndex(0);
                     },
                     child: Text("Cancel"),
                   ),
                   Spacer(),
                   FlatButton(
-                    onPressed: () => _save(inContext, notesModel),
+                    onPressed: () {
+                      FocusScope.of(inContext).requestFocus(FocusNode());
+
+                      _save(inContext, notesModel);
+                    },
                     child: Text("Save"),
                   )
                 ],
@@ -63,10 +65,8 @@ class NotesEntry extends StatelessWidget {
                     title: TextFormField(
                       decoration: InputDecoration(hintText: "Title"),
                       controller: _titleEditingController,
-                      focusNode: myFodusNode,
                       validator: (value) {
                         if (value.isEmpty) return "please enter a title";
-                        myFodusNode.requestFocus();
                         return null;
                       },
                     ),

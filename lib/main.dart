@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 
 import 'notes/notes.dart';
+import 'tasks/tasks.dart';
 import 'utils.dart' as utils;
 
 void main() {
@@ -59,7 +60,7 @@ class MyApp extends StatelessWidget {
             Text("Appointment TODO"),
             Text("Contacts TODO"),
             Notes(),
-            Text("Tasks TODO"),
+            Tasks(),
             
           ]),
         ),
