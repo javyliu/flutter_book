@@ -28,6 +28,7 @@ class MyApp extends StatelessWidget {
     print("## FlutterBook.build()");
 
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(
         primarySwatch: Colors.blue,

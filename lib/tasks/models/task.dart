@@ -1,3 +1,5 @@
+import '../../base_model.dart';
+
 class Task  {
 	int id;
 	String description;
@@ -24,6 +26,10 @@ class Task  {
 		data['completed'] = this.completed;
 		return data;
 	}
-
-
 }
+
+class TasksModel extends BaseModel {
+  
+}
+
+TasksModel tasksModel = TasksModel();
