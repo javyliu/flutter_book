@@ -1,0 +1,8 @@
+app_name: 我的应用
+title: "我的第一个全球化程序"
+tabs: 
+  Appointments: 约会
+  Contacts: 联系人
+  Notes: 便笺
+  Task: 任务
+content: 内容
