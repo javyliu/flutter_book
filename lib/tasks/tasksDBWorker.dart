@@ -58,7 +58,7 @@ class TasksDBWorker {
   Future<List> all() async{
     Database db = await database;
     var recs = await db.query("tasks");
-    return recs?.map((m)=>Task.fromJson(m))?.toList() ?? [];
+    return recs.isNotEmpty ? recs.map((m)=>Task.fromJson(m)).toList() : [];
   }
 
   

@@ -1,7 +1,7 @@
 import 'package:flutter_book/base_model.dart';
 
 class Contact  {
-	String id;
+	int id;
 	String name;
 	String phone;
 	String email;
