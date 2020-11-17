@@ -79,7 +79,15 @@ class ContactEntry extends StatelessWidget {
               child: ListView(
                 children: [
                   ListTile(
-                    title: avatarFile.existsSync() ? Image.file(avatarFile) : Text('No avatar image for this contact'),
+                    leading: Text(''),
+                    title: avatarFile.existsSync()
+                        ? CircleAvatar(
+                            backgroundImage: FileImage(avatarFile),
+                            radius: 100,
+                            child: Text('Javy', style: TextStyle(fontSize: 80,)),
+                            // child: Image.file(avatarFile),
+                          )
+                        : Text('No avatar image for this contact'),
                     trailing: IconButton(
                       icon: Icon(Icons.edit),
                       color: Colors.blue,
@@ -137,32 +145,27 @@ class ContactEntry extends StatelessWidget {
   }
 
   void _save(BuildContext context, ContactsModel model) async {
-    if(!_formKey.currentState.validate()) return;
+    if (!_formKey.currentState.validate()) return;
     var id;
-    if(model.entityBeingEdited.id == null){
+    if (model.entityBeingEdited.id == null) {
       id = await ContactsDBWorker.db.create(contactsModel.entityBeingEdited);
-
-    }else{
+    } else {
       id = contactsModel.entityBeingEdited.id;
       await ContactsDBWorker.db.update(contactsModel.entityBeingEdited);
     }
 
-    File afile = File(join(utils.docsDir.path,"avatar"));
-    if(afile.existsSync()){
+    File afile = File(join(utils.docsDir.path, "avatar"));
+    if (afile.existsSync()) {
       afile.renameSync(join(utils.docsDir.path, id.toString()));
-      
     }
 
     contactsModel.loadData("contacts", ContactsDBWorker.db);
     model.setStackIndex(0);
-    Scaffold.of(context).showSnackBar(
-      SnackBar(
-        backgroundColor: Colors.blue,
-        duration: Duration(seconds: 2),
-        content: Text("Contact saved"),
-      )
-    );
-
+    Scaffold.of(context).showSnackBar(SnackBar(
+      backgroundColor: Colors.blue,
+      duration: Duration(seconds: 2),
+      content: Text("Contact saved"),
+    ));
   }
 
   // ignore: unused_element
