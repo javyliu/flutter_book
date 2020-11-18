@@ -16,8 +16,8 @@ class AppointmentsList extends StatelessWidget {
     EventList<Event> _markedDateMap = EventList();
 
     for (Appointment item in appointmentModel.entityList) {
-      List dateParts = item.apptDate.split(",");
-      DateTime aptDate = DateTime(int.parse(dateParts[0]), int.parse(dateParts[1]), int.parse(dateParts[2]));
+      List dateParts = item.apptDate.split(",").map((e) => int.parse(e)).toList();
+      DateTime aptDate = DateTime(dateParts[0], dateParts[1], dateParts[2]);
       _markedDateMap.add(
         aptDate,
         Event(
@@ -106,8 +106,8 @@ class AppointmentsList extends StatelessWidget {
                                   }
                                   String apptTime = "";
                                   if (appointment.apptTime != null) {
-                                    List timeParts = appointment.apptTime.split(",");
-                                    TimeOfDay at = TimeOfDay(hour: int.parse(timeParts[0]), minute: int.parse(timeParts[1]));
+                                    List timeParts = appointment.apptTime.split(",").map((e) => int.parse(e)).toList();
+                                    TimeOfDay at = TimeOfDay(hour: timeParts[0], minute: timeParts[1]);
                                     apptTime = " (${at.format(inctx)})";
                                   }
 
@@ -159,15 +159,15 @@ class AppointmentsList extends StatelessWidget {
     if (apt.apptDate == null) {
       appointmentModel.setChosenDate(null);
     } else {
-      List dateParts = apt.apptDate.split(",");
-      DateTime apptDate = DateTime(int.parse(dateParts[0]), int.parse(dateParts[1]), int.parse(dateParts[2]));
-      appointmentModel.setChosenDate(DateFormat.yMMMMd("en_US").format(apptDate.toLocal()));
+      List dateParts = apt.apptDate.split(",").map((e) => int.parse(e)).toList();
+      DateTime apptDate = DateTime(dateParts[0],dateParts[1], dateParts[2]);
+      appointmentModel.setChosenDate(DateFormat.yMMMMd(I18n.curLang(context)).format(apptDate.toLocal()));
 
       if (apt.apptTime == null) {
         appointmentModel.setApptTime(null);
       } else {
-        List timeParts = apt.apptTime.split(",");
-        TimeOfDay _time = TimeOfDay(hour: int.parse(timeParts[0]), minute: int.parse(timeParts[1]));
+        List timeParts = apt.apptTime.split(",").map((e) => int.parse(e)).toList();
+        TimeOfDay _time = TimeOfDay(hour: timeParts[0], minute: timeParts[1]);
         appointmentModel.setApptTime(_time.format(context));
       }
       appointmentModel.setStackIndex(1);

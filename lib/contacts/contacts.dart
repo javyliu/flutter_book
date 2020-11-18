@@ -5,6 +5,7 @@ import 'package:flutter_book/contacts/contact_entry.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:intl/intl.dart';
 import 'package:scoped_model/scoped_model.dart';
+import '../i18n.dart';
 import 'contacts_db_worker.dart';
 import 'models/contact.dart';
 import '../utils.dart' as utils;
@@ -84,9 +85,9 @@ class ContactsList extends StatelessWidget {
                           if (contactsModel.entityBeingEdited.birthday == null) {
                             contactsModel.setChosenDate(null);
                           } else {
-                            List dateParts = contactsModel.entityBeingEdited.birthday.split(",");
-                            DateTime birthday = DateTime(int.parse(dateParts[0]), int.parse(dateParts[1]), int.parse(dateParts[2]));
-                            contactsModel.setChosenDate(DateFormat.yMMMMd("en-US").format(birthday.toLocal()));
+                            List dateParts = contactsModel.entityBeingEdited.birthday.split(",").map((e)=>int.parse(e)).toList();
+                            DateTime birthday = DateTime(dateParts[0], dateParts[1], dateParts[2]);
+                            contactsModel.setChosenDate(DateFormat.yMMMMd(I18n.curLang(context)).format(birthday.toLocal()));
                           }
                           contactsModel.setStackIndex(1);
                         },

@@ -3,6 +3,7 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:intl/intl.dart';
 import 'package:scoped_model/scoped_model.dart';
 
+import '../i18n.dart';
 import 'models/task.dart';
 import 'task_entry.dart';
 import 'tasksDBWorker.dart';
@@ -51,7 +52,7 @@ class TasksList extends StatelessWidget {
           if (tsk.dueDate != null) {
             List dateParts = tsk.dueDate.split(",");
             DateTime dueDate = DateTime(int.parse(dateParts[0]), int.parse(dateParts[1]), int.parse(dateParts[2]));
-            sDate = DateFormat.yMMMMd("en_US").format(dueDate.toLocal());
+            sDate = DateFormat.yMMMMd(I18n.curLang(context)).format(dueDate.toLocal());
           }
 
           return Slidable(

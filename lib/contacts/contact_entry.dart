@@ -84,7 +84,7 @@ class ContactEntry extends StatelessWidget {
                         ? CircleAvatar(
                             backgroundImage: FileImage(avatarFile),
                             radius: 100,
-                            child: Text('Javy', style: TextStyle(fontSize: 80,)),
+                            child: Text(_nameCon.text.isEmpty ? "" : _nameCon.text.substring(0,1).toUpperCase(), style: TextStyle(fontSize: 80,)),
                             // child: Image.file(avatarFile),
                           )
                         : Text('No avatar image for this contact'),

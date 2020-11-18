@@ -5,6 +5,7 @@ import 'package:flutter_book/appointments/appointments.dart';
 import 'package:flutter_book/contacts/contacts.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
 
 import 'i18n.dart';
@@ -80,6 +81,7 @@ class HomePage extends StatelessWidget  {
     print("--------${MaterialLocalizations.of(context).backButtonTooltip}----------------");
     print("--------${FlutterI18n.currentLocale(context)}----------------");
     print("--------${I18n.t(context,"tabs")}----------------");
+    print("---21-----${Intl.systemLocale}----------------");
 
     return DefaultTabController(
       length: 4,

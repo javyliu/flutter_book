@@ -129,8 +129,8 @@ Future _selectTime(BuildContext context) async {
   TimeOfDay initTime = TimeOfDay.now();
   Appointment apt = appointmentModel.entityBeingEdited;
   if (apt.apptTime != null) {
-    List _stime = apt.apptTime.split(",");
-    initTime = TimeOfDay(hour: int.parse(_stime[0]), minute: int.parse(_stime[1]));
+    List _stime = apt.apptTime.split(",").map((e) => int.parse(e)).toList();
+    initTime = TimeOfDay(hour: _stime[0], minute: _stime[1]);
   }
 
   TimeOfDay picked = await showTimePicker(context: context, initialTime: initTime);
