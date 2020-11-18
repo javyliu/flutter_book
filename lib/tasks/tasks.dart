@@ -50,8 +50,8 @@ class TasksList extends StatelessWidget {
           Task tsk = tasksModel.entityList[index];
           String sDate;
           if (tsk.dueDate != null) {
-            List dateParts = tsk.dueDate.split(",");
-            DateTime dueDate = DateTime(int.parse(dateParts[0]), int.parse(dateParts[1]), int.parse(dateParts[2]));
+            List dateParts = tsk.dueDate.split(",").map((e) => int.parse(e)).toList();
+            DateTime dueDate = DateTime(dateParts[0], dateParts[1], dateParts[2]);
             sDate = DateFormat.yMMMMd(I18n.curLang(context)).format(dueDate.toLocal());
           }
 
@@ -71,8 +71,12 @@ class TasksList extends StatelessWidget {
                 '${tsk.description}',
                 style: tsk.completed == "true" ? TextStyle(color: Theme.of(ctx).disabledColor, decoration: TextDecoration.lineThrough) : TextStyle(color: Theme.of(ctx).textTheme.headline6.color),
               ),
-              subtitle: tsk.dueDate == null ? null
-                  : Text(sDate,style:tsk.completed == "true" ? TextStyle(color: Theme.of(ctx).disabledColor, decoration: TextDecoration.lineThrough) : TextStyle(color: Theme.of(ctx).textTheme.headline6.color),
+              subtitle: tsk.dueDate == null
+                  ? null
+                  : Text(
+                      sDate,
+                      style:
+                          tsk.completed == "true" ? TextStyle(color: Theme.of(ctx).disabledColor, decoration: TextDecoration.lineThrough) : TextStyle(color: Theme.of(ctx).textTheme.headline6.color),
                     ),
               onTap: () async {
                 if (tsk.completed == "true") return;

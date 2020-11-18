@@ -1,13 +1,13 @@
 import 'dart:io';
+
+import 'package:flutter/material.dart';
 import 'package:flutter_book/contacts/contacts_db_worker.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart';
-
-import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 
-import 'models/contact.dart';
 import '../utils.dart' as utils;
+import 'models/contact.dart';
 
 class ContactEntry extends StatelessWidget {
   final TextEditingController _nameCon = TextEditingController();
@@ -84,7 +84,10 @@ class ContactEntry extends StatelessWidget {
                         ? CircleAvatar(
                             backgroundImage: FileImage(avatarFile),
                             radius: 100,
-                            child: Text(_nameCon.text.isEmpty ? "" : _nameCon.text.substring(0,1).toUpperCase(), style: TextStyle(fontSize: 80,)),
+                            child: Text(_nameCon.text.isEmpty ? "" : _nameCon.text.substring(0, 1).toUpperCase(),
+                                style: TextStyle(
+                                  fontSize: 80,
+                                )),
                             // child: Image.file(avatarFile),
                           )
                         : Text('No avatar image for this contact'),

@@ -36,6 +36,7 @@ void main() {
   startUp();
 }
 
+
 class MyApp extends StatelessWidget {
   final FlutterI18nDelegate flutterI18nDelegate;
 

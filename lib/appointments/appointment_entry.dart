@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_book/appointments/appointment_db_worker.dart';
 import 'package:scoped_model/scoped_model.dart';
+
 import '../utils.dart' as utils;
 import 'models/appointment.dart';
 
@@ -18,6 +19,8 @@ class AppointmentEntry extends StatelessWidget {
       appointmentModel.entityBeingEdited.description = _desCon.text;
     });
   }
+
+  
 
   @override
   Widget build(BuildContext context) {

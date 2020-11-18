@@ -8,12 +8,11 @@ class Note {
   String color;
 
   String toString(){
-    return "{ id= $id, title= $title, content= $content, color= $color }";
+    return "{ id: $id, title: $title, content: $content, color: $color }";
     
   }
 
 }
-
 class NotesModel extends BaseModel {
   String color;
 

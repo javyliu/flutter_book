@@ -4,12 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_book/contacts/contact_entry.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:intl/intl.dart';
+import 'package:path/path.dart';
 import 'package:scoped_model/scoped_model.dart';
+
 import '../i18n.dart';
+import '../utils.dart' as utils;
 import 'contacts_db_worker.dart';
 import 'models/contact.dart';
-import '../utils.dart' as utils;
-import 'package:path/path.dart';
 
 class Contacts extends StatelessWidget {
   Contacts() {
