@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
-import 'notes_db_worker.dart';
-import 'notes_model.dart' show NotesModel, notesModel;
+import 'note_db_worker.dart';
+import 'models/note.dart' show NoteModel, noteModel;
 import '../utils.dart' as utils;
 
 class NotesEntry extends StatelessWidget {
@@ -13,24 +13,24 @@ class NotesEntry extends StatelessWidget {
   NotesEntry() {
     print("## NotesEntry.constuctor");
     _titleEditingController.addListener(() {
-      notesModel.entityBeingEdited.title = _titleEditingController.text;
+      noteModel.entityBeingEdited.title = _titleEditingController.text;
     });
     _contentEditingController.addListener(() {
-      notesModel.entityBeingEdited.content = _contentEditingController.text;
+      noteModel.entityBeingEdited.content = _contentEditingController.text;
     });
   }
 
   @override
   Widget build(BuildContext context) {
     print("## NotesEntry.build()");
-    if (notesModel.entityBeingEdited != null) {
-      _titleEditingController.text = notesModel.entityBeingEdited.title;
-      _contentEditingController.text = notesModel.entityBeingEdited.content;
+    if (noteModel.entityBeingEdited != null) {
+      _titleEditingController.text = noteModel.entityBeingEdited.title;
+      _contentEditingController.text = noteModel.entityBeingEdited.content;
     }
 
     return ScopedModel(
-      model: notesModel,
-      child: ScopedModelDescendant<NotesModel>(
+      model: noteModel,
+      child: ScopedModelDescendant<NoteModel>(
         builder: (inContext, inChild, inModel) {
           return Scaffold(
             bottomNavigationBar: Padding(
@@ -49,7 +49,7 @@ class NotesEntry extends StatelessWidget {
                     onPressed: () {
                       FocusScope.of(inContext).requestFocus(FocusNode());
 
-                      _save(inContext, notesModel);
+                      _save(inContext, noteModel);
                     },
                     child: Text("Save"),
                   )
@@ -107,29 +107,26 @@ class NotesEntry extends StatelessWidget {
       return GestureDetector(
         child: Container(
           decoration: ShapeDecoration(
-            shape: Border.all(color: utils.colorByStr(item), width: 18) + Border.all(width: 6, color: notesModel.color == item ? utils.colorByStr(item) : Theme.of(inContext).canvasColor),
+            shape: Border.all(color: utils.colorByStr(item), width: 18) + Border.all(width: 6, color: noteModel.color == item ? utils.colorByStr(item) : Theme.of(inContext).canvasColor),
           ),
         ),
         onTap: () {
-          notesModel.entityBeingEdited.color = item;
-          notesModel.setColor(item);
+          noteModel.entityBeingEdited.color = item;
+          noteModel.setColor(item);
         },
       );
     }).toList();
   }
 
-  void _save(BuildContext context, NotesModel inmodel) async {
-    print("## NotesEntry._save");
+  void _save(BuildContext context, NoteModel inmodel) async {
     if (!_formKey.currentState.validate()) return;
 
     if (inmodel.entityBeingEdited.id == null) {
-      print("## NotesEntry._save(): creating: ${inmodel.entityBeingEdited}");
-      await NotesDBWorker.db.create(notesModel.entityBeingEdited);
+      await NoteDBWorker.db.create(noteModel.entityBeingEdited);
     } else {
-      print("## NotesEntry._save(): Updating: ${inmodel.entityBeingEdited}");
-      await NotesDBWorker.db.update(notesModel.entityBeingEdited);
+      await NoteDBWorker.db.update(noteModel.entityBeingEdited);
     }
-    notesModel.loadData("notes", NotesDBWorker.db);
+    noteModel.loadData("notes", NoteDBWorker.db);
 
     inmodel.setStackIndex(0);
 

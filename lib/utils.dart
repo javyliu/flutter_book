@@ -8,19 +8,19 @@ import 'i18n.dart';
 
 Directory docsDir;
 
-Future selectDate(BuildContext inContext, BaseModel inModel, String inDateString) async {
+Future selectDate(BuildContext context, BaseModel model, String dateString) async {
   print("## globals.selectDate()");
 
   DateTime initialDate = DateTime.now();
 
-  if (inDateString != null) {
-    List dateParts = inDateString.split(",");
-    initialDate = DateTime(int.parse(dateParts[0]), int.parse(dateParts[1]), int.parse(dateParts[2]));
+  if (dateString != null) {
+    List dateParts = dateString.split(",").map((e) => int.parse(e)).toList();
+    initialDate = DateTime(dateParts[0], dateParts[1], dateParts[2]);
   }
 
   ///显示日历控件，显示当前时间
   DateTime picked = await showDatePicker(
-    context: inContext,
+    context: context,
     initialDate: initialDate,
     firstDate: DateTime(1900),
     lastDate: DateTime(2100),
@@ -29,7 +29,7 @@ Future selectDate(BuildContext inContext, BaseModel inModel, String inDateString
   ///有时间要学习一下intl 包，用于国际化及日期格式，数字格式化
   ///setChosenDate会触发更新
   if (picked != null) {
-    inModel.setChosenDate(DateFormat.yMMMd(I18n.curLang(inContext)).format(picked.toLocal()));
+    model.setChosenDate(DateFormat.yMMMd(I18n.curLang(context)).format(picked.toLocal()));
     return "${picked.year},${picked.month},${picked.day}";
   }
 }

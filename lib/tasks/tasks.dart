@@ -6,20 +6,20 @@ import 'package:scoped_model/scoped_model.dart';
 import '../i18n.dart';
 import 'models/task.dart';
 import 'task_entry.dart';
-import 'tasksDBWorker.dart';
+import 'task_db_worker.dart';
 
 class Tasks extends StatelessWidget {
   Tasks({
     Key key,
   }) : super(key: key) {
-    tasksModel.loadData("tasks", TasksDBWorker.db);
+    taskModel.loadData("tasks", TasksDBWorker.db);
   }
 
   @override
   Widget build(BuildContext context) {
-    return ScopedModel<TasksModel>(
-      model: tasksModel,
-      child: ScopedModelDescendant<TasksModel>(
+    return ScopedModel<TaskModel>(
+      model: taskModel,
+      child: ScopedModelDescendant<TaskModel>(
         builder: (context, child, model) {
           return IndexedStack(index: model.stackIndex, children: [TasksList(), TasksEntry()]);
         },
@@ -38,16 +38,16 @@ class TasksList extends StatelessWidget {
           color: Colors.white,
         ),
         onPressed: () async {
-          tasksModel.entityBeingEdited = Task();
-          tasksModel.setChosenDate(null);
-          tasksModel.setStackIndex(1);
+          taskModel.entityBeingEdited = Task();
+          taskModel.setChosenDate(null);
+          taskModel.setStackIndex(1);
         },
       ),
       body: ListView.builder(
         padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
-        itemCount: tasksModel.entityList.length,
+        itemCount: taskModel.entityList.length,
         itemBuilder: (ctx, index) {
-          Task tsk = tasksModel.entityList[index];
+          Task tsk = taskModel.entityList[index];
           String sDate;
           if (tsk.dueDate != null) {
             List dateParts = tsk.dueDate.split(",").map((e) => int.parse(e)).toList();
@@ -64,7 +64,7 @@ class TasksList extends StatelessWidget {
                 onChanged: (value) async {
                   tsk.completed = value.toString();
                   await TasksDBWorker.db.update(tsk);
-                  tasksModel.loadData("tasks", TasksDBWorker.db);
+                  taskModel.loadData("tasks", TasksDBWorker.db);
                 },
               ),
               title: Text(
@@ -80,13 +80,13 @@ class TasksList extends StatelessWidget {
                     ),
               onTap: () async {
                 if (tsk.completed == "true") return;
-                tasksModel.entityBeingEdited = await TasksDBWorker.db.find(tsk.id);
-                if (tasksModel.entityBeingEdited.dueDate == null) {
-                  tasksModel.setChosenDate(null);
+                taskModel.entityBeingEdited = await TasksDBWorker.db.find(tsk.id);
+                if (taskModel.entityBeingEdited.dueDate == null) {
+                  taskModel.setChosenDate(null);
                 } else {
-                  tasksModel.setChosenDate(sDate);
+                  taskModel.setChosenDate(sDate);
                 }
-                tasksModel.setStackIndex(1);
+                taskModel.setStackIndex(1);
               },
             ),
             secondaryActions: [
@@ -125,7 +125,7 @@ class TasksList extends StatelessWidget {
                   duration: Duration(seconds: 2),
                   backgroundColor: Colors.red,
                 ));
-                tasksModel.loadData("tasks", TasksDBWorker.db);
+                taskModel.loadData("tasks", TasksDBWorker.db);
               },
               child: Text('Delete'),
             ),

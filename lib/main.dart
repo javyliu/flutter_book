@@ -36,7 +36,6 @@ void main() {
   startUp();
 }
 
-
 class MyApp extends StatelessWidget {
   final FlutterI18nDelegate flutterI18nDelegate;
 
@@ -70,7 +69,7 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class HomePage extends StatelessWidget  {
+class HomePage extends StatelessWidget {
   const HomePage({
     Key key,
   }) : super(key: key);
@@ -81,7 +80,7 @@ class HomePage extends StatelessWidget  {
     print("--------${FlutterI18n.currentLocale(context)}----------------");
     print("--------${MaterialLocalizations.of(context).backButtonTooltip}----------------");
     print("--------${FlutterI18n.currentLocale(context)}----------------");
-    print("--------${I18n.t(context,"tabs")}----------------");
+    print("--------${I18n.t(context, "tabs")}----------------");
     print("---21-----${Intl.systemLocale}----------------");
 
     return DefaultTabController(
@@ -93,17 +92,17 @@ class HomePage extends StatelessWidget  {
             tabs: [
               Tab(
                 icon: Icon(Icons.date_range),
-                text: I18n.t(context,"tabs.Appointments"),
+                text: I18n.t(context, "tabs.Appointments"),
               ),
               Tab(
                 icon: Icon(Icons.contacts),
-                text: I18n.t(context,"tabs.Contacts"),
+                text: I18n.t(context, "tabs.Contacts"),
               ),
               Tab(
                 icon: Icon(Icons.note),
-                text: I18n.t(context,"tabs.Notes"),
+                text: I18n.t(context, "tabs.Notes"),
               ),
-              Tab(icon: Icon(Icons.assignment_turned_in), text: I18n.t(context,"tabs.Task")),
+              Tab(icon: Icon(Icons.assignment_turned_in), text: I18n.t(context, "tabs.Task")),
             ],
           ),
         ),

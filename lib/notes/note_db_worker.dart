@@ -1,12 +1,12 @@
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 import '../utils.dart' as utils;
-import 'notes_model.dart';
+import 'models/note.dart';
 
-class NotesDBWorker {
-  NotesDBWorker._();
+class NoteDBWorker {
+  NoteDBWorker._();
 
-  static final NotesDBWorker db = NotesDBWorker._();
+  static final NoteDBWorker db = NoteDBWorker._();
   Database _db;
 
   Future get database async {
@@ -39,41 +39,14 @@ class NotesDBWorker {
     return db;
   }
 
-  Map<String, dynamic> noteToMap(Note inNote) {
-    print("## Notes NotesDBWorker.noteToMap(): inNote = $inNote");
-
-    Map<String, dynamic> map = Map<String, dynamic>();
-
-    map["id"] = inNote.id;
-    map["title"] = inNote.title;
-    map["content"] = inNote.content;
-    map["color"] = inNote.color;
-
-    print("## notes NotesDBWorker.noteToMap: map = $map");
-
-    return map;
-  }
-
-  Note noteFromMap(Map inMap) {
-    print("## Notes NotesDBWorker.noteFromMap(): inMap = $inMap");
-    Note note = Note();
-    note.id = inMap["id"];
-    note.title = inMap["title"];
-    note.content = inMap["content"];
-    note.color = inMap["color"];
-    print("## notes NotesDBWorker.noteFromMap(): note = $note");
-
-    return note;
-  }
-
   Future create(Note inNote) async {
     print("## Notes NotesDBWorker.create(): inNote = $inNote");
     Database db = await database;
 
     var val = await db.rawQuery("select max(id)+1 as id from notes");
-    int id = val.first["id"] ?? 1;
+    inNote.id = val.first["id"] ?? 1;
 
-    return await db.rawInsert("insert into notes(id, title, content, color) values(?,?,?,?)", [id, inNote.title, inNote.content, inNote.color]);
+    return await db.insert("notes", inNote.toMap());
   }
 
   Future<Note> find(int inID) async {
@@ -82,7 +55,7 @@ class NotesDBWorker {
     Database db = await database;
 
     var rec = await db.query("notes", where: "id = ?", whereArgs: [inID]);
-    return noteFromMap(rec.first);
+    return Note.fromMap(rec.first);
   }
 
   Future<List> all() async {
@@ -90,7 +63,7 @@ class NotesDBWorker {
 
     Database db = await database;
     var recs = await db.query("notes");
-    var list = recs.isNotEmpty ? recs.map((m) => noteFromMap(m)).toList() : [];
+    var list = recs.isNotEmpty ? recs.map((m) => Note.fromMap(m)).toList() : [];
     return list;
   }
 
@@ -98,7 +71,7 @@ class NotesDBWorker {
     print("## Notes NotesDBWorker.update(): inNote = $inNote");
 
     Database db = await database;
-    return await db.update("notes", noteToMap(inNote), where: "id = ?", whereArgs: [inNote.id]);
+    return await db.update("notes", inNote.toMap(), where: "id = ?", whereArgs: [inNote.id]);
   }
 
   Future delete(int inID) async {

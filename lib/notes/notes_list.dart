@@ -1,10 +1,9 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 
 import '../utils.dart' as utils;
-import 'notes_db_worker.dart';
-import 'notes_model.dart';
+import 'models/note.dart' show Note, noteModel;
+import 'note_db_worker.dart';
 
 class NotesList extends StatelessWidget {
   const NotesList({
@@ -20,21 +19,20 @@ class NotesList extends StatelessWidget {
           color: Colors.white,
         ),
         onPressed: () async {
-          notesModel.entityBeingEdited = Note();
-          notesModel.setColor(null);
-          notesModel.setStackIndex(1);
+          noteModel.entityBeingEdited = Note();
+          noteModel.setColor(null);
+          noteModel.setStackIndex(1);
         },
       ),
       body: ListView.builder(
-        itemCount: notesModel.entityList.length,
+        itemCount: noteModel.entityList.length,
         itemBuilder: (BuildContext inBuildContext, int inIndex) {
-          Note note = notesModel.entityList[inIndex];
+          Note note = noteModel.entityList[inIndex];
           Color color = utils.colorByStr(note.color);
 
           return Container(
             margin: EdgeInsets.fromLTRB(10, 10, 10, 0),
             child: Slidable(
-
               actionPane: SlidableScrollActionPane(),
               actionExtentRatio: 0.25,
               secondaryActions: [
@@ -59,14 +57,14 @@ class NotesList extends StatelessWidget {
                             ),
                             FlatButton(
                               onPressed: () async {
-                                await NotesDBWorker.db.delete(note.id);
+                                await NoteDBWorker.db.delete(note.id);
                                 Navigator.of(inAlertContext).pop();
                                 Scaffold.of(inBuildContext).showSnackBar(SnackBar(
                                   backgroundColor: Colors.red,
                                   duration: Duration(seconds: 2),
                                   content: Text("Note deleted"),
                                 ));
-                                notesModel.loadData("notes", NotesDBWorker.db);
+                                noteModel.loadData("notes", NoteDBWorker.db);
                               },
                               child: Text("Delete"),
                             ),
@@ -79,16 +77,15 @@ class NotesList extends StatelessWidget {
               ],
               child: Card(
                 margin: EdgeInsets.all(0),
-                
                 elevation: 8,
                 color: color,
                 child: ListTile(
                   title: Text("${note.title}"),
                   subtitle: Text("${note.content}"),
                   onTap: () async {
-                    notesModel.entityBeingEdited = await NotesDBWorker.db.find(note.id);
-                    notesModel.setColor(notesModel.entityBeingEdited.color);
-                    notesModel.setStackIndex(1);
+                    noteModel.entityBeingEdited = await NoteDBWorker.db.find(note.id);
+                    noteModel.setColor(noteModel.entityBeingEdited.color);
+                    noteModel.setStackIndex(1);
                   },
                 ),
               ),
