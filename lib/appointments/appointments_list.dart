@@ -6,7 +6,6 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:intl/intl.dart';
 import 'package:scoped_model/scoped_model.dart';
 
-import '../i18n.dart';
 import 'appointment_db_worker.dart';
 import 'models/appointment.dart';
 
@@ -55,7 +54,7 @@ class AppointmentsList extends StatelessWidget {
                       horizontal: 10,
                     ),
                     child: CalendarCarousel<Event>(
-                      locale: I18n.curLang(ctx),
+                      locale: Intl.getCurrentLocale(),
                       thisMonthDayBorderColor: Colors.grey,
                       daysHaveCircularBorder: true,
                       markedDatesMap: _markedDateMap,
@@ -89,7 +88,7 @@ class AppointmentsList extends StatelessWidget {
                       child: Column(
                         children: [
                           Text(
-                            DateFormat.yMMMMd(I18n.curLang(context)).format(inDate.toLocal()),
+                            DateFormat.yMMMMd(Intl.getCurrentLocale()).format(inDate.toLocal()),
                             textAlign: TextAlign.center,
                             style: TextStyle(color: Theme.of(context).accentColor, fontSize: 24),
                           ),
@@ -135,8 +134,9 @@ class AppointmentsList extends StatelessWidget {
                                         )
                                       ],
                                     ),
-                                    Container(height: 2,)
-                                    
+                                    Container(
+                                      height: 2,
+                                    )
                                   ]);
                                 }),
                           ),
@@ -160,8 +160,8 @@ class AppointmentsList extends StatelessWidget {
       appointmentModel.setChosenDate(null);
     } else {
       List dateParts = apt.apptDate.split(",").map((e) => int.parse(e)).toList();
-      DateTime apptDate = DateTime(dateParts[0],dateParts[1], dateParts[2]);
-      appointmentModel.setChosenDate(DateFormat.yMMMMd(I18n.curLang(context)).format(apptDate.toLocal()));
+      DateTime apptDate = DateTime(dateParts[0], dateParts[1], dateParts[2]);
+      appointmentModel.setChosenDate(DateFormat.yMMMMd(Intl.getCurrentLocale()).format(apptDate.toLocal()));
 
       if (apt.apptTime == null) {
         appointmentModel.setApptTime(null);

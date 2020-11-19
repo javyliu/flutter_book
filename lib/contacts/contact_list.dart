@@ -1,13 +1,12 @@
+import 'dart:io';
+
+import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:intl/intl.dart';
 import 'package:path/path.dart';
-import 'dart:io';
-import '../i18n.dart';
-import '../utils.dart' as utils;
-
-import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 
+import '../utils.dart' as utils;
 import 'contacts_db_worker.dart';
 import 'models/contact.dart';
 
@@ -63,7 +62,7 @@ class ContactsList extends StatelessWidget {
                           } else {
                             List dateParts = contactsModel.entityBeingEdited.birthday.split(",").map((e) => int.parse(e)).toList();
                             DateTime birthday = DateTime(dateParts[0], dateParts[1], dateParts[2]);
-                            contactsModel.setChosenDate(DateFormat.yMMMMd(I18n.curLang(context)).format(birthday.toLocal()));
+                            contactsModel.setChosenDate(DateFormat.yMMMMd(Intl.getCurrentLocale()).format(birthday.toLocal()));
                           }
                           contactsModel.setStackIndex(1);
                         },

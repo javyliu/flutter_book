@@ -1,8 +1,0 @@
-
-app_name: Flutter Book
-title: "My first globalize app"
-tabs:
-  Appointments: Appointments
-  Contacts: Contacts
-  Notes: Notes
-  Task: Task

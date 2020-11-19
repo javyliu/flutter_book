@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 import 'base_model.dart';
-import 'i18n.dart';
 
 Directory docsDir;
 
@@ -29,7 +28,7 @@ Future selectDate(BuildContext context, BaseModel model, String dateString) asyn
   ///有时间要学习一下intl 包，用于国际化及日期格式，数字格式化
   ///setChosenDate会触发更新
   if (picked != null) {
-    model.setChosenDate(DateFormat.yMMMd(I18n.curLang(context)).format(picked.toLocal()));
+    model.setChosenDate(DateFormat.yMMMd(Intl.getCurrentLocale()).format(picked.toLocal()));
     return "${picked.year},${picked.month},${picked.day}";
   }
 }
