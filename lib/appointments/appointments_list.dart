@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_book/generated/l10n.dart';
 import 'package:flutter_calendar_carousel/classes/event.dart';
 import 'package:flutter_calendar_carousel/classes/event_list.dart';
 import 'package:flutter_calendar_carousel/flutter_calendar_carousel.dart';
@@ -63,6 +64,20 @@ class AppointmentsList extends StatelessWidget {
                       },
                     ),
                   ),
+                ),
+                FlatButton(
+                    onPressed: () async {
+                      print("${Intl.getCurrentLocale()}");
+                      var needLocal = S.delegate.supportedLocales.firstWhere((element) => element.countryCode != Intl.getCurrentLocale());
+
+                      await S.load(needLocal);
+                      ScopedModel.of<AppointmentModel>(context).notifyListeners();
+
+                      print("----changed-${Intl.getCurrentLocale()}");
+                    },
+                    child: Text('change the language')),
+                Spacer(
+                  flex: 1,
                 )
               ],
             ),
@@ -80,68 +95,67 @@ class AppointmentsList extends StatelessWidget {
           model: appointmentModel,
           child: ScopedModelDescendant<AppointmentModel>(
             builder: (context, child, model) {
-              return Scaffold(
-                body: Container(
-                  child: Padding(
-                    padding: EdgeInsets.all(10),
-                    child: GestureDetector(
-                      child: Column(
-                        children: [
-                          Text(
-                            DateFormat.yMMMMd(Intl.getCurrentLocale()).format(inDate.toLocal()),
-                            textAlign: TextAlign.center,
-                            style: TextStyle(color: Theme.of(context).accentColor, fontSize: 24),
-                          ),
-                          Divider(),
-                          Expanded(
-                            child: ListView.builder(
-                                itemCount: appointmentModel.entityList.length,
-                                itemBuilder: (inctx, index) {
-                                  Appointment appointment = appointmentModel.entityList[index];
-                                  if (appointment.apptDate != "${inDate.year},${inDate.month},${inDate.day}") {
-                                    return Container(
-                                      height: 0,
-                                    );
-                                  }
-                                  String apptTime = "";
-                                  if (appointment.apptTime != null) {
-                                    List timeParts = appointment.apptTime.split(",").map((e) => int.parse(e)).toList();
-                                    TimeOfDay at = TimeOfDay(hour: timeParts[0], minute: timeParts[1]);
-                                    apptTime = " (${at.format(inctx)})";
-                                  }
+              return Container(
+                child: Padding(
+                  padding: EdgeInsets.all(10),
+                  child: GestureDetector(
+                    child: Column(
+                      children: [
+                        Text(
+                          DateFormat.yMMMMd(Intl.getCurrentLocale()).format(inDate.toLocal()),
+                          textAlign: TextAlign.center,
+                          style: TextStyle(color: Theme.of(context).accentColor, fontSize: 24),
+                        ),
+                        Divider(),
+                        Expanded(
+                          child: ListView.builder(
+                            itemCount: appointmentModel.entityList.length,
+                            itemBuilder: (inctx, index) {
+                              Appointment appointment = appointmentModel.entityList[index];
+                              if (appointment.apptDate != "${inDate.year},${inDate.month},${inDate.day}") {
+                                return Container(
+                                  height: 0,
+                                );
+                              }
+                              String apptTime = "";
+                              if (appointment.apptTime != null) {
+                                List timeParts = appointment.apptTime.split(",").map((e) => int.parse(e)).toList();
+                                TimeOfDay at = TimeOfDay(hour: timeParts[0], minute: timeParts[1]);
+                                apptTime = " (${at.format(inctx)})";
+                              }
 
-                                  return Column(children: [
-                                    Slidable(
-                                      actionPane: SlidableBehindActionPane(),
-                                      actionExtentRatio: 0.25,
-                                      child: Container(
-                                        padding: EdgeInsets.only(bottom: 8),
-                                        color: Colors.grey.shade300,
-                                        child: ListTile(
-                                          title: Text('${appointment.title}$apptTime'),
-                                          subtitle: appointment.description == null ? null : Text("${appointment.description}"),
-                                          onTap: () async {
-                                            _editAppointment(inctx, appointment);
-                                          },
-                                        ),
-                                      ),
-                                      secondaryActions: [
-                                        IconSlideAction(
-                                          caption: "Delete",
-                                          color: Colors.red,
-                                          icon: Icons.delete,
-                                          onTap: () => _deleteAppointment(inctx, appointment),
-                                        )
-                                      ],
+                              return Column(children: [
+                                Slidable(
+                                  actionPane: SlidableBehindActionPane(),
+                                  actionExtentRatio: 0.25,
+                                  child: Container(
+                                    padding: EdgeInsets.only(bottom: 8),
+                                    color: Colors.grey.shade300,
+                                    child: ListTile(
+                                      title: Text('${appointment.title}$apptTime'),
+                                      subtitle: appointment.description == null ? null : Text("${appointment.description}"),
+                                      onTap: () async {
+                                        _editAppointment(inctx, appointment);
+                                      },
                                     ),
-                                    Container(
-                                      height: 2,
+                                  ),
+                                  secondaryActions: [
+                                    IconSlideAction(
+                                      caption: "Delete",
+                                      color: Colors.red,
+                                      icon: Icons.delete,
+                                      onTap: () => _deleteAppointment(inctx, appointment),
                                     )
-                                  ]);
-                                }),
+                                  ],
+                                ),
+                                Container(
+                                  height: 2,
+                                )
+                              ]);
+                            },
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
                   ),
                 ),

@@ -77,6 +77,7 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     print("-------${Localizations.localeOf(context)}-----------------");
+    print("---not current lang----${S.delegate.supportedLocales.firstWhere((element) => element.countryCode != Intl.getCurrentLocale())}-----------------");
     print("--------${MaterialLocalizations.of(context).backButtonTooltip}----------------");
     print("---21-----${Intl.systemLocale}------${Intl.getCurrentLocale()}--------");
     var testAry = [1, 2, 3, 4, 5, 6, 7];

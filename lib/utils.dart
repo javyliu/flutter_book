@@ -20,6 +20,7 @@ Future selectDate(BuildContext context, BaseModel model, String dateString) asyn
   ///显示日历控件，显示当前时间
   DateTime picked = await showDatePicker(
     context: context,
+    locale: Locale(Intl.getCurrentLocale()),
     initialDate: initialDate,
     firstDate: DateTime(1900),
     lastDate: DateTime(2100),
