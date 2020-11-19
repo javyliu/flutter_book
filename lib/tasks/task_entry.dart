@@ -5,11 +5,12 @@ import 'package:scoped_model/scoped_model.dart';
 import 'models/task.dart';
 import '../utils.dart' as utils;
 
-class TasksEntry extends StatelessWidget {
+///任务新建/编辑
+class TaskEntry extends StatelessWidget {
   final TextEditingController _descriptionEditingController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
-  TasksEntry() {
+  TaskEntry() {
     _descriptionEditingController.addListener(() {
       taskModel.entityBeingEdited.description = _descriptionEditingController.text;
     });
@@ -92,12 +93,12 @@ class TasksEntry extends StatelessWidget {
     if (!_formKey.currentState.validate()) return;
 
     if (model.entityBeingEdited.id == null) {
-      await TasksDBWorker.db.create(taskModel.entityBeingEdited);
+      await TaskDBWorker.dbWorker.create(taskModel.entityBeingEdited);
     } else {
-      await TasksDBWorker.db.update(taskModel.entityBeingEdited);
+      await TaskDBWorker.dbWorker.update(taskModel.entityBeingEdited);
     }
 
-    taskModel.loadData("tasks", TasksDBWorker.db);
+    taskModel.loadData("tasks", TaskDBWorker.dbWorker);
     model.setStackIndex(0);
 
     Scaffold.of(context).showSnackBar(SnackBar(

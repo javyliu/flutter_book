@@ -10,9 +10,7 @@ class NoteDBWorker {
   Database _db;
 
   Future get database async {
-    if (_db == null) {
-      _db = await init();
-    }
+    _db ??= await init();
     print("## Notes NotesDBWorker.get-database(): _db = $_db");
 
     return _db;
@@ -39,22 +37,22 @@ class NoteDBWorker {
     return db;
   }
 
-  Future create(Note inNote) async {
-    print("## Notes NotesDBWorker.create(): inNote = $inNote");
+  Future create(Note note) async {
+    print("## Notes NotesDBWorker.create(): inNote = $note");
     Database db = await database;
 
     var val = await db.rawQuery("select max(id)+1 as id from notes");
-    inNote.id = val.first["id"] ?? 1;
+    note.id = val.first["id"] ?? 1;
 
-    return await db.insert("notes", inNote.toMap());
+    return await db.insert("notes", note.toMap());
   }
 
-  Future<Note> find(int inID) async {
-    print("## Notes NotesDBWorker.get(): inID = $inID");
+  Future<Note> find(int id) async {
+    print("## Notes NotesDBWorker.get(): inID = $id");
 
     Database db = await database;
 
-    var rec = await db.query("notes", where: "id = ?", whereArgs: [inID]);
+    var rec = await db.query("notes", where: "id = ?", whereArgs: [id]);
     return Note.fromMap(rec.first);
   }
 
@@ -67,17 +65,17 @@ class NoteDBWorker {
     return list;
   }
 
-  Future update(Note inNote) async {
-    print("## Notes NotesDBWorker.update(): inNote = $inNote");
+  Future update(Note note) async {
+    print("## Notes NotesDBWorker.update(): inNote = $note");
 
     Database db = await database;
-    return await db.update("notes", inNote.toMap(), where: "id = ?", whereArgs: [inNote.id]);
+    return await db.update("notes", note.toMap(), where: "id = ?", whereArgs: [note.id]);
   }
 
-  Future delete(int inID) async {
-    print("## Notes NotesDBWorker.delete(): inID = $inID");
+  Future delete(int id) async {
+    print("## Notes NotesDBWorker.delete(): inID = $id");
 
     Database db = await database;
-    return await db.delete("notes", where: "id = ?", whereArgs: [inID]);
+    return await db.delete("notes", where: "id = ?", whereArgs: [id]);
   }
 }

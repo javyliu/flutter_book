@@ -12,7 +12,7 @@ class Tasks extends StatelessWidget {
   Tasks({
     Key key,
   }) : super(key: key) {
-    taskModel.loadData("tasks", TasksDBWorker.db);
+    taskModel.loadData("tasks", TaskDBWorker.dbWorker);
   }
 
   @override
@@ -21,7 +21,7 @@ class Tasks extends StatelessWidget {
       model: taskModel,
       child: ScopedModelDescendant<TaskModel>(
         builder: (context, child, model) {
-          return IndexedStack(index: model.stackIndex, children: [TasksList(), TasksEntry()]);
+          return IndexedStack(index: model.stackIndex, children: [TasksList(), TaskEntry()]);
         },
       ),
     );
@@ -63,8 +63,8 @@ class TasksList extends StatelessWidget {
                 value: tsk.completed == "true" ? true : false,
                 onChanged: (value) async {
                   tsk.completed = value.toString();
-                  await TasksDBWorker.db.update(tsk);
-                  taskModel.loadData("tasks", TasksDBWorker.db);
+                  await TaskDBWorker.dbWorker.update(tsk);
+                  taskModel.loadData("tasks", TaskDBWorker.dbWorker);
                 },
               ),
               title: Text(
@@ -80,7 +80,7 @@ class TasksList extends StatelessWidget {
                     ),
               onTap: () async {
                 if (tsk.completed == "true") return;
-                taskModel.entityBeingEdited = await TasksDBWorker.db.find(tsk.id);
+                taskModel.entityBeingEdited = await TaskDBWorker.dbWorker.find(tsk.id);
                 if (taskModel.entityBeingEdited.dueDate == null) {
                   taskModel.setChosenDate(null);
                 } else {
@@ -118,14 +118,14 @@ class TasksList extends StatelessWidget {
             ),
             FlatButton(
               onPressed: () async {
-                await TasksDBWorker.db.delete(task.id);
+                await TaskDBWorker.dbWorker.delete(task.id);
                 Navigator.of(ctx).pop();
                 Scaffold.of(context).showSnackBar(SnackBar(
                   content: Text('Task deleted'),
                   duration: Duration(seconds: 2),
                   backgroundColor: Colors.red,
                 ));
-                taskModel.loadData("tasks", TasksDBWorker.db);
+                taskModel.loadData("tasks", TaskDBWorker.dbWorker);
               },
               child: Text('Delete'),
             ),

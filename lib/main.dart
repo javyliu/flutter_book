@@ -80,6 +80,9 @@ class HomePage extends StatelessWidget {
     print("--------${FlutterI18n.currentLocale(context)}----------------");
     print("--------${I18n.t(context, "tabs")}----------------");
     print("---21-----${Intl.systemLocale}----------------");
+    var testAry = [1, 2, 3, 4, 5, 6, 7];
+    print(testAry.getRange(1, 3));
+    print(testAry.sublist(1, 3));
 
     return DefaultTabController(
       length: 4,

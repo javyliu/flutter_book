@@ -4,11 +4,12 @@ import 'package:sqflite/sqflite.dart';
 import '../utils.dart' as utils;
 import 'models/task.dart';
 
-class TasksDBWorker {
+class TaskDBWorker {
   Database _db;
-  TasksDBWorker._();
+  TaskDBWorker._();
 
-  static final TasksDBWorker db = TasksDBWorker._();
+  ///单例
+  static final TaskDBWorker dbWorker = TaskDBWorker._();
 
   Future get database async {
     _db ??= await init();
@@ -39,8 +40,11 @@ class TasksDBWorker {
 
   Future create(Task inTask) async {
     Database db = await database;
-    var val = await db.rawQuery("select max(id)+1 as id from tasks");
+    // var val = await db.rawQuery("select max(id)+1 as id from tasks");
+    var val = await db.query("tasks", columns: ["max(id)+1 as id"]);
     Map<String, dynamic> values = inTask.toJson();
+
+    print("=======${val.first}");
 
     values["id"] = val.first["id"] ?? 1;
     return await db.insert("tasks", values);
