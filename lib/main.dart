@@ -3,15 +3,14 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_book/appointments/appointments.dart';
 import 'package:flutter_book/contacts/contacts.dart';
-import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
 
+import 'generated/l10n.dart';
 import 'notes/notes.dart';
 import 'tasks/tasks.dart';
 import 'utils.dart' as utils;
-import 'generated/l10n.dart';
 
 void main() {
   // final FlutterI18nDelegate flutterI18nDelegate = FlutterI18nDelegate(
@@ -66,7 +65,7 @@ class MyApp extends StatelessWidget {
       //   const Locale('zh', ''),
       // ],
       supportedLocales: S.delegate.supportedLocales,
-      builder: FlutterI18n.rootAppBuilder(),
+      // builder: FlutterI18n.rootAppBuilder(),
       home: HomePage(),
     );
   }
@@ -78,9 +77,7 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     print("-------${Localizations.localeOf(context)}-----------------");
-    print("--------${FlutterI18n.currentLocale(context)}----------------");
     print("--------${MaterialLocalizations.of(context).backButtonTooltip}----------------");
-    print("--------${FlutterI18n.currentLocale(context)}----------------");
     print("---21-----${Intl.systemLocale}------${Intl.getCurrentLocale()}--------");
     var testAry = [1, 2, 3, 4, 5, 6, 7];
     print(testAry.getRange(1, 3));
