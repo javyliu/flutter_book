@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_book/generated/l10n.dart';
 import 'package:flutter_calendar_carousel/classes/event.dart';
@@ -67,11 +69,12 @@ class AppointmentsList extends StatelessWidget {
                 ),
                 FlatButton(
                     onPressed: () async {
-                      print("${Intl.getCurrentLocale()}");
-                      var needLocal = S.delegate.supportedLocales.firstWhere((element) => element.countryCode != Intl.getCurrentLocale());
+                      print("current local: ${Intl.getCurrentLocale()}");
+                      var needLocal = S.delegate.supportedLocales.firstWhere((element) => element.languageCode != Intl.getCurrentLocale());
+                      log("need local: $needLocal");
 
                       await S.load(needLocal);
-                      ScopedModel.of<AppointmentModel>(context).notifyListeners();
+                      // ScopedModel.of<AppointmentModel>(context).notifyListeners();
 
                       print("----changed-${Intl.getCurrentLocale()}");
                     },
