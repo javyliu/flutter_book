@@ -1,28 +1,40 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:intl/intl.dart';
-import 'package:scoped_model/scoped_model.dart';
+import 'package:provider/provider.dart';
 
 import 'models/task.dart';
 import 'task_db_worker.dart';
 import 'task_entry.dart';
 
 class Tasks extends StatelessWidget {
-  Tasks({
-    Key key,
-  }) : super(key: key) {
-    taskModel.loadData("tasks", TaskDBWorker.dbWorker);
+  @override
+  Widget build(BuildContext context) {
+    return ChangeNotifierProvider<TaskModel>(
+      create: (context) {
+        var taskModel = TaskModel();
+        taskModel.loadData("tasks");
+        return taskModel;
+      },
+      child: IdxStack(),
+    );
   }
+}
+
+class IdxStack extends StatelessWidget {
+  const IdxStack({
+    Key key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return ScopedModel<TaskModel>(
-      model: taskModel,
-      child: ScopedModelDescendant<TaskModel>(
-        builder: (context, child, model) {
-          return IndexedStack(index: model.stackIndex, children: [TasksList(), TaskEntry()]);
-        },
-      ),
+    var idx = context.select<TaskModel, int>((value) => value.stackIndex);
+    return IndexedStack(
+      index: idx,
+      children: [
+        TasksList(),
+        TaskEntry(),
+      ],
     );
   }
 }
@@ -30,6 +42,8 @@ class Tasks extends StatelessWidget {
 class TasksList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    var taskModel = context.watch<TaskModel>();
+
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         child: Icon(
@@ -63,7 +77,7 @@ class TasksList extends StatelessWidget {
                 onChanged: (value) async {
                   tsk.completed = value.toString();
                   await TaskDBWorker.dbWorker.update(tsk);
-                  taskModel.loadData("tasks", TaskDBWorker.dbWorker);
+                  taskModel.loadData("tasks");
                 },
               ),
               title: Text(
@@ -124,7 +138,8 @@ class TasksList extends StatelessWidget {
                   duration: Duration(seconds: 2),
                   backgroundColor: Colors.red,
                 ));
-                taskModel.loadData("tasks", TaskDBWorker.dbWorker);
+                var taskModel = context.read<TaskModel>();
+                taskModel.loadData("tasks");
               },
               child: Text('Delete'),
             ),

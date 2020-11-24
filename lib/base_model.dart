@@ -1,11 +1,12 @@
-import 'package:scoped_model/scoped_model.dart';
+import 'package:flutter/material.dart';
 
-class BaseModel extends Model {
-
+class BaseModel extends ChangeNotifier {
   int stackIndex = 0;
   List entityList = [];
 
   var entityBeingEdited;
+
+  dynamic dbWorker;
 
   String chosenDate;
 
@@ -16,12 +17,11 @@ class BaseModel extends Model {
     notifyListeners();
   }
 
-  void loadData(String inEntityType, dynamic inDatabase) async  {
+  void loadData(String inEntityType) async {
     print("## ${inEntityType}Model.loadData()");
-    entityList = await inDatabase.all();
+    entityList = await dbWorker.all();
 
     notifyListeners();
-    
   }
 
   void setStackIndex(int inStackIndex) {
@@ -29,5 +29,4 @@ class BaseModel extends Model {
     stackIndex = inStackIndex;
     notifyListeners();
   }
-
 }

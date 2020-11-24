@@ -1,3 +1,5 @@
+import 'package:flutter_book/tasks/task_db_worker.dart';
+
 import '../../base_model.dart';
 
 class Task {
@@ -27,6 +29,10 @@ class Task {
   }
 }
 
-class TaskModel extends BaseModel {}
+class TaskModel extends BaseModel {
+  TaskModel() {
+    dbWorker = TaskDBWorker.dbWorker;
+  }
+}
 
 TaskModel taskModel = TaskModel();

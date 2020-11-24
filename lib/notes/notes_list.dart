@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:provider/provider.dart';
 
 import '../utils.dart' as utils;
-import 'models/note.dart' show Note, noteModel;
+import 'models/note.dart';
 import 'note_db_worker.dart';
 
 class NotesList extends StatelessWidget {
@@ -12,6 +13,10 @@ class NotesList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // var nm = Provider.of<NoteModel>(context, listen: false);
+    var nm = context.watch<NoteModel>();
+    print("## notes list build()");
+
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         child: Icon(
@@ -19,14 +24,18 @@ class NotesList extends StatelessWidget {
           color: Colors.white,
         ),
         onPressed: () async {
+          // var noteModel = context.read<NoteModel>();
+          var noteModel = nm;
+
           noteModel.entityBeingEdited = Note();
           noteModel.setColor(null);
           noteModel.setStackIndex(1);
         },
       ),
       body: ListView.builder(
-        itemCount: noteModel.entityList.length,
+        itemCount: nm.entityList.length,
         itemBuilder: (BuildContext inBuildContext, int inIndex) {
+          var noteModel = nm;
           Note note = noteModel.entityList[inIndex];
           Color color = utils.colorByStr(note.color);
 
@@ -64,7 +73,7 @@ class NotesList extends StatelessWidget {
                                   duration: Duration(seconds: 2),
                                   content: Text("Note deleted"),
                                 ));
-                                noteModel.loadData("notes", NoteDBWorker.db);
+                                nm.loadData("notes");
                               },
                               child: Text("Delete"),
                             ),
@@ -83,6 +92,7 @@ class NotesList extends StatelessWidget {
                   title: Text("${note.title}"),
                   subtitle: Text("${note.content}"),
                   onTap: () async {
+                    var noteModel = nm;
                     noteModel.entityBeingEdited = await NoteDBWorker.db.find(note.id);
                     noteModel.setColor(noteModel.entityBeingEdited.color);
                     noteModel.setStackIndex(1);

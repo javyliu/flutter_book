@@ -2,11 +2,11 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_book/appointments/appointments.dart';
-import 'package:flutter_book/contacts/contacts.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
 
+import 'contacts/contacts.dart';
 import 'generated/l10n.dart';
 import 'notes/notes.dart';
 import 'tasks/tasks.dart';

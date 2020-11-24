@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:flutter_book/notes/note_db_worker.dart';
+
 import '../../base_model.dart';
 
 class Note {
@@ -17,8 +19,6 @@ class Note {
       'color': color,
     };
   }
-
-  
 
   factory Note.fromMap(Map<String, dynamic> map) {
     if (map == null) return null;
@@ -43,10 +43,11 @@ class Note {
 
 class NoteModel extends BaseModel {
   String color;
+  NoteModel() {
+    this.dbWorker = NoteDBWorker.db;
+  }
   void setColor(String color) {
     color = color;
     notifyListeners();
   }
 }
-
-NoteModel noteModel = NoteModel();
