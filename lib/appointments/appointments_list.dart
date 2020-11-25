@@ -8,6 +8,7 @@ import 'package:flutter_calendar_carousel/flutter_calendar_carousel.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:intl/intl.dart';
 
+import '../local_lang.dart';
 import 'appointment_db_worker.dart';
 import 'models/appointment.dart';
 
@@ -15,6 +16,8 @@ class AppointmentsList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     log("---appointment list build");
+
+    LocalLang lang = context.watch<LocalLang>();
 
     EventList<Event> _markedDateMap = EventList();
 
@@ -56,7 +59,7 @@ class AppointmentsList extends StatelessWidget {
                 horizontal: 10,
               ),
               child: CalendarCarousel<Event>(
-                locale: Intl.getCurrentLocale(),
+                locale: lang.curLang,
                 thisMonthDayBorderColor: Colors.grey,
                 daysHaveCircularBorder: true,
                 markedDatesMap: _markedDateMap,
@@ -73,6 +76,8 @@ class AppointmentsList extends StatelessWidget {
                 log("need local: $needLocal");
 
                 await S.load(needLocal);
+                Provider.of<LocalLang>(context, listen: false).lang = needLocal.languageCode;
+
                 // ScopedModel.of<AppointmentModel>(context).notifyListeners();
 
                 print("----changed-${Intl.getCurrentLocale()}");

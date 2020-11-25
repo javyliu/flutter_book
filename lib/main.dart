@@ -5,9 +5,11 @@ import 'package:flutter_book/appointments/appointments.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:provider/provider.dart';
 
 import 'contacts/contacts.dart';
 import 'generated/l10n.dart';
+import 'local_lang.dart';
 import 'notes/notes.dart';
 import 'tasks/tasks.dart';
 import 'utils.dart' as utils;
@@ -66,7 +68,10 @@ class MyApp extends StatelessWidget {
       // ],
       supportedLocales: S.delegate.supportedLocales,
       // builder: FlutterI18n.rootAppBuilder(),
-      home: HomePage(),
+      home: ChangeNotifierProvider(
+        create: (context) => LocalLang(),
+        child: HomePage(),
+      ),
     );
   }
 }
@@ -84,36 +89,40 @@ class HomePage extends StatelessWidget {
     print(testAry.getRange(1, 3));
     print(testAry.sublist(1, 3));
 
-    return DefaultTabController(
-      length: 4,
-      child: Scaffold(
-        appBar: AppBar(
-          title: Text(S.of(context).app_name),
-          bottom: TabBar(
-            tabs: [
-              Tab(
-                icon: Icon(Icons.date_range),
-                text: S.of(context).appointments,
+    return Consumer<LocalLang>(
+      builder: (context, value, child) {
+        return DefaultTabController(
+          length: 4,
+          child: Scaffold(
+            appBar: AppBar(
+              title: Text(S.of(context).app_name),
+              bottom: TabBar(
+                tabs: [
+                  Tab(
+                    icon: Icon(Icons.date_range),
+                    text: S.of(context).appointments,
+                  ),
+                  Tab(
+                    icon: Icon(Icons.contacts),
+                    text: S.of(context).contacts,
+                  ),
+                  Tab(
+                    icon: Icon(Icons.note),
+                    text: S.of(context).notes,
+                  ),
+                  Tab(icon: Icon(Icons.assignment_turned_in), text: S.of(context).task),
+                ],
               ),
-              Tab(
-                icon: Icon(Icons.contacts),
-                text: S.of(context).contacts,
-              ),
-              Tab(
-                icon: Icon(Icons.note),
-                text: S.of(context).notes,
-              ),
-              Tab(icon: Icon(Icons.assignment_turned_in), text: S.of(context).task),
-            ],
+            ),
+            body: TabBarView(children: [
+              Appointments(),
+              Contacts(),
+              Notes(),
+              Tasks(),
+            ]),
           ),
-        ),
-        body: TabBarView(children: [
-          Appointments(),
-          Contacts(),
-          Notes(),
-          Tasks(),
-        ]),
-      ),
+        );
+      },
     );
   }
 }
