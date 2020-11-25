@@ -7,17 +7,13 @@ import 'notes_list.dart';
 
 class Notes extends StatelessWidget {
   Notes() {
-    // noteModel.loadData("notes", NoteDBWorker.db);
+    model.loadData("notes");
   }
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (context) {
-        var noteModel = NoteModel();
-        noteModel.loadData("notes");
-        return noteModel;
-      },
+    return ChangeNotifierProvider.value(
+      value: model,
       child: IdxStack(),
     );
   }

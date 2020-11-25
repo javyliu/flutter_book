@@ -14,7 +14,7 @@ class BaseModel extends ChangeNotifier {
     print("## BaseModel.setChosenDate(): inDate = $inDate");
 
     chosenDate = inDate;
-    notifyListeners();
+    // notifyListeners();
   }
 
   void loadData(String inEntityType) async {

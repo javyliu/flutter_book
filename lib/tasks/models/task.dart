@@ -35,4 +35,4 @@ class TaskModel extends BaseModel {
   }
 }
 
-TaskModel taskModel = TaskModel();
+TaskModel model = TaskModel();

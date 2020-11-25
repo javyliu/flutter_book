@@ -1,18 +1,21 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
-import 'package:flutter_book/appointments/appointment_entry.dart';
-import 'package:flutter_book/appointments/appointments_list.dart';
-import 'package:flutter_book/appointments/models/appointment.dart';
 import 'package:provider/provider.dart';
 
+import 'appointment_entry.dart';
+import 'appointments_list.dart';
+import 'models/appointment.dart';
+
 class Appointments extends StatelessWidget {
+  Appointments() {
+    model.loadData("appointments");
+  }
+
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider<AppointmentModel>(
-      create: (context) {
-        var am = AppointmentModel();
-        am.loadData("appointments");
-        return am;
-      },
+    return ChangeNotifierProvider.value(
+      value: model,
       child: BuildIndexedStack(),
     );
   }
@@ -25,6 +28,8 @@ class BuildIndexedStack extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    log("--- appointments build");
+
     var idx = context.select<AppointmentModel, int>((model) => model.stackIndex);
 
     return IndexedStack(

@@ -16,7 +16,7 @@ class ContactsList extends StatelessWidget {
   Widget build(BuildContext context) {
     log("-- contact list build");
 
-    var contactsModel = context.watch<ContactsModel>();
+    var contactsModel = context.watch<ContactModel>();
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add, color: Colors.white),
@@ -56,7 +56,7 @@ class ContactsList extends StatelessWidget {
                     if (avatarFile.existsSync()) {
                       avatarFile.deleteSync();
                     }
-                    contactsModel.entityBeingEdited = await ContactsDBWorker.db.find(contact.id);
+                    contactsModel.entityBeingEdited = await ContactDBWorker.db.find(contact.id);
                     if (contactsModel.entityBeingEdited.birthday == null) {
                       contactsModel.setChosenDate(null);
                     } else {
@@ -88,7 +88,7 @@ class ContactsList extends StatelessWidget {
     );
   }
 
-  Future _deleteContact(BuildContext context, Contact contact, ContactsModel cm) async {
+  Future _deleteContact(BuildContext context, Contact contact, ContactModel cm) async {
     return showDialog(
       context: context,
       barrierDismissible: false,
@@ -105,7 +105,7 @@ class ContactsList extends StatelessWidget {
                 if (avatarFile.existsSync()) {
                   avatarFile.deleteSync();
                 }
-                await ContactsDBWorker.db.delete(contact.id);
+                await ContactDBWorker.db.delete(contact.id);
                 Navigator.of(scontext).pop();
                 Scaffold.of(context).showSnackBar(SnackBar(
                   content: Text('Contact deleted'),

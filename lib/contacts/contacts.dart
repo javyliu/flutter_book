@@ -9,19 +9,15 @@ import 'models/contact.dart';
 
 class Contacts extends StatelessWidget {
   Contacts() {
-    // contactsModel.loadData("contacts", ContactsDBWorker.db);
+    log("----------Contact constructor");
+    model.loadData("contacts");
   }
 
   @override
   Widget build(BuildContext context) {
     log("--contacts build");
-
-    return ChangeNotifierProvider(
-      create: (context) {
-        ContactsModel cm = ContactsModel();
-        cm.loadData("contacts");
-        return cm;
-      },
+    return ChangeNotifierProvider.value(
+      value: model,
       child: WIndexedStack(),
     );
   }
@@ -36,7 +32,8 @@ class WIndexedStack extends StatelessWidget {
   Widget build(BuildContext context) {
     log("--contact windexedstack build");
 
-    var idx = context.select<ContactsModel, int>((item) => item.stackIndex);
+    var idx = context.select<ContactModel, int>((item) => item.stackIndex);
+    // var idx = Provider.of<ContactModel>(context).stackIndex;
     return IndexedStack(
       index: idx,
       children: [

@@ -14,6 +14,8 @@ import 'models/appointment.dart';
 class AppointmentsList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    log("---appointment list build");
+
     EventList<Event> _markedDateMap = EventList();
 
     var am = context.watch<AppointmentModel>();

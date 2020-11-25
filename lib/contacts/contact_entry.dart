@@ -18,22 +18,13 @@ class ContactEntry extends StatelessWidget {
   final GlobalKey<FormState> _formKey = GlobalKey();
 
   ContactEntry() {
-    // _nameCon.addListener(() {
-    //   contactsModel.entityBeingEdited.name = _nameCon.text;
-    // });
-    // _phoneCon.addListener(() {
-    //   contactsModel.entityBeingEdited.phone = _phoneCon.text;
-    // });
-    // _emailCon.addListener(() {
-    //   contactsModel.entityBeingEdited.email = _emailCon.text;
-    // });
+    // var contactsModel = model;
   }
 
   @override
   Widget build(BuildContext context) {
     log("-- contact entry build");
-
-    var contactsModel = context.watch<ContactsModel>();
+    var contactsModel = Provider.of<ContactModel>(context, listen: false);
     _nameCon.addListener(() {
       contactsModel.entityBeingEdited.name = _nameCon.text;
     });
@@ -43,6 +34,7 @@ class ContactEntry extends StatelessWidget {
     _emailCon.addListener(() {
       contactsModel.entityBeingEdited.email = _emailCon.text;
     });
+
     if (contactsModel.entityBeingEdited != null) {
       Contact _ct = contactsModel.entityBeingEdited;
       _nameCon.text = _ct.name;
@@ -153,14 +145,14 @@ class ContactEntry extends StatelessWidget {
     );
   }
 
-  void _save(BuildContext context, ContactsModel model) async {
+  void _save(BuildContext context, ContactModel model) async {
     if (!_formKey.currentState.validate()) return;
     var id;
     if (model.entityBeingEdited.id == null) {
-      id = await ContactsDBWorker.db.create(model.entityBeingEdited);
+      id = await ContactDBWorker.db.create(model.entityBeingEdited);
     } else {
       id = model.entityBeingEdited.id;
-      await ContactsDBWorker.db.update(model.entityBeingEdited);
+      await ContactDBWorker.db.update(model.entityBeingEdited);
     }
 
     File afile = File(join(utils.docsDir.path, "avatar"));
@@ -179,7 +171,7 @@ class ContactEntry extends StatelessWidget {
 
   // ignore: unused_element
   Future _selectAvatar(BuildContext context) {
-    var contactsModel = context.read<ContactsModel>();
+    var contactsModel = context.read<ContactModel>();
     return showDialog(
       context: context,
       builder: (ctx) {

@@ -53,6 +53,8 @@ class AppointmentModel extends BaseModel {
 
   void setApptTime(String stime) {
     apptTime = stime;
-    notifyListeners();
+    // notifyListeners();
   }
 }
+
+final AppointmentModel model = AppointmentModel();

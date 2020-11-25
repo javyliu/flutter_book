@@ -31,12 +31,14 @@ class Contact {
   }
 }
 
-class ContactsModel extends BaseModel {
-  ContactsModel() {
-    dbWorker = ContactsDBWorker.db;
+class ContactModel extends BaseModel {
+  ContactModel() {
+    dbWorker = ContactDBWorker.db;
   }
   void triggerRebuild() {
     print("## ContactModel.triggerRebuild()");
     notifyListeners();
   }
 }
+
+final ContactModel model = ContactModel();

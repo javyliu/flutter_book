@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_book/appointments/appointment_db_worker.dart';
@@ -11,18 +13,11 @@ class AppointmentEntry extends StatelessWidget {
 
   final GlobalKey<FormState> _formKey = GlobalKey();
 
-  AppointmentEntry() {
-    // _titleCon.addListener(() {
-    //   appointmentModel.entityBeingEdited.title = _titleCon.text;
-    // });
-    // _desCon.addListener(() {
-    //   appointmentModel.entityBeingEdited.description = _desCon.text;
-    // });
-  }
-
   @override
   Widget build(BuildContext context) {
-    var appointmentModel = context.read<AppointmentModel>();
+    log("--- appointment entry build");
+
+    var appointmentModel = Provider.of<AppointmentModel>(context, listen: false);
     _titleCon.addListener(() {
       appointmentModel.entityBeingEdited.title = _titleCon.text;
     });

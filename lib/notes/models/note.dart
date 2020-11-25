@@ -51,3 +51,5 @@ class NoteModel extends BaseModel {
     notifyListeners();
   }
 }
+
+final model = NoteModel();

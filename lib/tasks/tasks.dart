@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:intl/intl.dart';
@@ -8,14 +10,15 @@ import 'task_db_worker.dart';
 import 'task_entry.dart';
 
 class Tasks extends StatelessWidget {
+  Tasks() {
+    model.loadData("tasks");
+  }
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider<TaskModel>(
-      create: (context) {
-        var taskModel = TaskModel();
-        taskModel.loadData("tasks");
-        return taskModel;
-      },
+    log("---tasks build");
+
+    return ChangeNotifierProvider.value(
+      value: model,
       child: IdxStack(),
     );
   }
@@ -42,6 +45,8 @@ class IdxStack extends StatelessWidget {
 class TasksList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    log("---tasks list build");
+
     var taskModel = context.watch<TaskModel>();
 
     return Scaffold(

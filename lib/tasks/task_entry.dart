@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_book/tasks/task_db_worker.dart';
 import 'package:provider/provider.dart';
@@ -18,6 +20,8 @@ class TaskEntry extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    log("---task entry build");
+
     var taskModel = context.watch<TaskModel>();
     _descriptionEditingController.addListener(() {
       taskModel.entityBeingEdited.description = _descriptionEditingController.text;
