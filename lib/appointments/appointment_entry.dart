@@ -1,6 +1,8 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_book/appointments/appointment_db_worker.dart';
 
@@ -129,7 +131,17 @@ Future _selectTime(BuildContext context, AppointmentModel am) async {
     initTime = TimeOfDay(hour: _stime[0], minute: _stime[1]);
   }
 
-  TimeOfDay picked = await showTimePicker(context: context, initialTime: initTime);
+  TimeOfDay picked = await showTimePicker(
+    context: context,
+    initialTime: initTime,
+    builder: (context, child) {
+      return Localizations(
+        locale: Locale(Intl.getCurrentLocale()),
+        delegates: <LocalizationsDelegate>[GlobalMaterialLocalizations.delegate, GlobalWidgetsLocalizations.delegate],
+        child: child,
+      );
+    },
+  );
 
   if (picked != null) {
     apt.apptTime = "${picked.hour},${picked.minute}";

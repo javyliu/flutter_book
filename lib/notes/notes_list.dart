@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:provider/provider.dart';
@@ -35,9 +37,12 @@ class NotesList extends StatelessWidget {
       body: ListView.builder(
         itemCount: nm.entityList.length,
         itemBuilder: (BuildContext inBuildContext, int inIndex) {
+          log("---List view builder");
+
           var noteModel = nm;
           Note note = noteModel.entityList[inIndex];
           Color color = utils.colorByStr(note.color);
+          log("---note's color: ${note.color}, note index: $inIndex");
 
           return Container(
             margin: EdgeInsets.fromLTRB(10, 10, 10, 0),
@@ -92,7 +97,7 @@ class NotesList extends StatelessWidget {
                   title: Text("${note.title}"),
                   subtitle: Text("${note.content}"),
                   onTap: () async {
-                    var noteModel = nm;
+                    var noteModel = context.read<NoteModel>();
                     noteModel.entityBeingEdited = await NoteDBWorker.db.find(note.id);
                     noteModel.setColor(noteModel.entityBeingEdited.color);
                     noteModel.setStackIndex(1);

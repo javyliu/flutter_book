@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_book/notes/models/note.dart';
 import 'package:provider/provider.dart';
@@ -100,13 +102,15 @@ class NotesEntry extends StatelessWidget {
 
   List<Widget> buildColors(BuildContext inContext, NoteModel noteModel) {
     List<String> _colors = ["red", "", "green", "", "blue", "", "yellow", "", "grey", "", "purple"];
+    log("-----build colors");
 
     return _colors.map((item) {
       if (item.isEmpty) return Spacer();
       return GestureDetector(
         child: Container(
           decoration: ShapeDecoration(
-            shape: Border.all(color: utils.colorByStr(item), width: 18) + Border.all(width: 6, color: noteModel.color == item ? utils.colorByStr(item) : Theme.of(inContext).canvasColor),
+            shape: Border.all(color: utils.colorByStr(item), width: 18) +
+                Border.all(width: 6, color: noteModel.entityBeingEdited.color == item ? utils.colorByStr(item) : Theme.of(inContext).canvasColor),
           ),
         ),
         onTap: () {
@@ -125,6 +129,7 @@ class NotesEntry extends StatelessWidget {
     } else {
       await NoteDBWorker.db.update(inmodel.entityBeingEdited);
     }
+    inmodel.loadData("notes");
 
     inmodel.setStackIndex(0);
 

@@ -53,6 +53,7 @@ class AppointmentsList extends StatelessWidget {
       body: Column(
         children: [
           Expanded(
+            flex: 2,
             child: Container(
               margin: EdgeInsets.symmetric(
                 vertical: 0,
@@ -69,23 +70,22 @@ class AppointmentsList extends StatelessWidget {
               ),
             ),
           ),
-          FlatButton(
-              onPressed: () async {
-                print("current local: ${Intl.getCurrentLocale()}");
-                var needLocal = S.delegate.supportedLocales.firstWhere((element) => element.languageCode != Intl.getCurrentLocale());
-                log("need local: $needLocal");
+          Expanded(
+            child: FlatButton(
+                onPressed: () async {
+                  print("current local: ${Intl.getCurrentLocale()}");
+                  var needLocal = S.delegate.supportedLocales.firstWhere((element) => element.languageCode != Intl.getCurrentLocale());
+                  log("need local: $needLocal");
 
-                await S.load(needLocal);
-                Provider.of<LocalLang>(context, listen: false).lang = needLocal.languageCode;
+                  await S.load(needLocal);
+                  Provider.of<LocalLang>(context, listen: false).lang = needLocal.languageCode;
 
-                // ScopedModel.of<AppointmentModel>(context).notifyListeners();
+                  // ScopedModel.of<AppointmentModel>(context).notifyListeners();
 
-                print("----changed-${Intl.getCurrentLocale()}");
-              },
-              child: Text('change the language')),
-          Spacer(
-            flex: 1,
-          )
+                  print("----changed-${Intl.getCurrentLocale()}");
+                },
+                child: Text('change the language')),
+          ),
         ],
       ),
     );

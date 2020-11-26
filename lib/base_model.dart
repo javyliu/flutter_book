@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 
 class BaseModel extends ChangeNotifier {
@@ -14,11 +16,11 @@ class BaseModel extends ChangeNotifier {
     print("## BaseModel.setChosenDate(): inDate = $inDate");
 
     chosenDate = inDate;
-    // notifyListeners();
+    notifyListeners();
   }
 
   void loadData(String inEntityType) async {
-    print("## ${inEntityType}Model.loadData()");
+    log("---## ${inEntityType}Model.loadData()");
     entityList = await dbWorker.all();
 
     notifyListeners();
